@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恩典365</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Source Han Serif CN', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background-color: #8B0000;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .qrcode-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .qrcode-section img {
+            width: 200px;
+            margin: 15px auto;
+            display: block;
+        }
+
+        .bible-verse {
+            font-style: italic;
+            color: #666;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 10px;
+            }
+            .qrcode-section img {
+                width: 60%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>恩典365 04-17</h1>
+            <p>每一天经历神的爱与恩典</p>
+        </header>
+
+        <div class="qrcode-section">
+            <h2>支持事工</h2>
+            <p class="bible-verse">"各人要随本心所酌定的，不要作难，不要勉强，因为捐得乐意的人是神所喜爱的。"（哥林多后书 9:7）</p>
+            <img src="fengxian.jpg" alt="奉献二维码">
+            <p>“乐意捐助的人，必蒙赐福”（箴言 22:9）</p>
+        </div>
+
+        <div class="video-section">
+            <h2>今日灵修</h2>
+            <video controls poster="video-poster.jpg">
+                <source src="https://biblechat.oss-cn-shanghai.aliyuncs.com/20250417.mp4" type="video/mp4">
+                您的浏览器不支持视频播放。
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // 可以添加视频播放统计或其他交互功能
+        document.querySelector('video').addEventListener('play', function() {
+            console.log('视频开始播放');
+        });
+    </script>
+</body>
+</html>
