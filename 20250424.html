@@ -132,6 +132,31 @@
                 width: 60%;
             }
         }
+        /* 超链接基础样式 */
+a {
+  color: #2196F3;          /* 默认颜色 - 蓝色 */
+  text-decoration: none;   /* 移除默认下划线 */
+  transition: color 0.3s ease; /* 颜色过渡动画 */
+  font-size: 16px;         /* 字体大小 */
+  font-family: Arial, sans-serif; /* 字体类型 */
+  padding: 2px 4px;        /* 内边距 */
+}
+
+/* 鼠标悬停状态 */
+a:hover {
+  color: #1976D2;          /* 悬停颜色 - 深蓝色 */
+  text-decoration: underline; /* 悬停时显示下划线 */
+}
+
+/* 点击瞬间状态 */
+a:active {
+  color: #F44336;          /* 点击颜色 - 红色 */
+}
+
+/* 已访问链接状态 */
+a:visited {
+  color: #9C27B0;          /* 已访问颜色 - 紫色 */
+}
     </style>
 </head>
 <body>
@@ -165,7 +190,17 @@
             </video>
         </div>
     </div>
-
+<div>以下是被下架内容：</div>
+    <div style="margin-top:1vh"><a href="20250414.html">2025-04-14</a></div>
+     <div style="margin-top:1vh"><a href="20250415.html">2025-04-15</a></div>
+     <div style="margin-top:1vh"><a href="20250416.html">2025-04-16</a></div>
+     <div style="margin-top:1vh"><a href="20250417.html">2025-04-17</a></div>
+     <div style="margin-top:1vh"><a href="20250418.html">2025-04-18</a></div>
+     <div style="margin-top:1vh"><a href="20250419.html">2025-04-19</a></div>
+     <div style="margin-top:1vh"><a href="20250420.html">2025-04-20</a></div>
+     <div style="margin-top:1vh"><a href="20250421.html">2025-04-21</a></div>
+     <div style="margin-top:1vh"><a href="20250422.html">2025-04-22</a></div>
+     <div style="margin-top:1vh"><a href="20250423.html">2025-04-23</a></div>
     <script>
         // 可以添加视频播放统计或其他交互功能
         document.querySelector('video').addEventListener('play', function() {
