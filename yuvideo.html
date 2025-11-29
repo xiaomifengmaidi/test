@@ -1,0 +1,678 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>于牧师讲道视频平台</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .announcement {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .announcement h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+        
+        .announcement p {
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .support-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .support-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .support-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(255, 75, 43, 0.6);
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .videos-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #ffcc00;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .video-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .video-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .video-duration {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+        
+        .modal p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .modal-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn.confirm {
+            background: linear-gradient(45deg, #00c853, #64dd17);
+            color: white;
+        }
+        
+        .modal-btn.cancel {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .support-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>讲道视频平台</h1>
+           
+        </header>
+        
+        <section class="announcement">
+            <h2></h2>
+            <p>恳请蒙主赐福的家人们凭信心支持这项事工，大家的支持，将用于我们平台事工的发展。凡甘心乐意的奉献，都是为永恒积攒财宝（马太福音6:20）</p>
+           
+        </section>
+        
+        <section class="support-section">
+            <button class="support-btn">扫码支持平台</button>
+            <image src="yhjzs.jpg" style="width:50%;display: block;margin: 0 auto;"></image>
+        </section>
+        
+        <section class="videos-section">
+            <h2>于牧师讲道视频</h2>
+            <div class="video-grid" id="videoGrid">
+                <!-- 视频将通过JavaScript动态生成 -->
+            </div>
+        </section>
+    </div>
+    
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <h2>支持平台</h2>
+            <p>您还没有支持我们的平台。支持后即可观看所有视频内容，同时帮助我们提供更好的服务！</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm" id="confirmSupport">立即支持</button>
+                <button class="modal-btn cancel" id="cancelSupport">稍后再说</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <h2>视频播放</h2>
+            <div id="videoPlayer"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="closeVideo">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // 模拟用户支持状态
+            let hasSupported = true;
+            
+            // 生成视频数据
+            const videos = [];
+            videos.push({
+                    id: 1,
+                    title: `我要因耶和华欢欣，因救我的神喜乐`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${1}`,
+                    audioUrl: `https://www.svca.cc/audio/20251109-01.mp3`,
+                    url: `https://www.svca.cc/video/20251109-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 2,
+                    title: `借感恩打开蒙福之泉`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${2}`,
+                    audioUrl: `https://www.svca.cc/audio/20251102-01.mp3`,
+                    url: `https://www.svca.cc/video/20251102-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 3,
+                    title: `尽情称颂主的滋味`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${3}`,
+                    audioUrl: `https://www.svca.cc/audio/20251026-01.mp3`,
+                    url: `https://www.svca.cc/video/20251026-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 4,
+                    title: `五饼二鱼的再思`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${4}`,
+                    audioUrl: `https://www.svca.cc/audio/20250921-01.mp3`,
+                    url: `https://www.svca.cc/video/20250921-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 5,
+                    title: `从香柏树到牛膝草`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${5}`,
+                    audioUrl: `https://www.svca.cc/audio/20250907-01.mp3`,
+                    url: `https://www.svca.cc/video/20250907-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 6,
+                    title: `忠于「成为祝福」的使命`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${6}`,
+                    audioUrl: `https://www.svca.cc/audio/20250831_LDC_AM-01.mp3`,
+                    url: `https://www.svca.cc/video/20250831-LDC-message-Yu-02.mp4`
+                });
+                videos.push({
+                    id: 7,
+                    title: `珍惜「承受祝福」的机会`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${7}`,
+                    audioUrl: `https://www.svca.cc/audio/20250829_LDC_PM-01.mp3`,
+                    url: `https://www.svca.cc/video/20250829-LDC-message-01-Yu.mp4`
+                });
+                videos.push({
+                    id: 8,
+                    title: `我的产业实在美好`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${8}`,
+                    audioUrl: `https://www.svca.cc/audio/20250817-01.mp3`,
+                    url: `https://www.svca.cc/video/20250817-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 9,
+                    title: `风浪中的无畏之民`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${9}`,
+                    audioUrl: `https://www.svca.cc/audio/20250810-01.mp3`,
+                    url: `https://www.svca.cc/video/20250810-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 10,
+                    title: `充满事奉 神的君尊祭司`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${10}`,
+                    audioUrl: `https://www.svca.cc/audio/20250713-01.mp3`,
+                    url: `https://www.svca.cc/video/20250713-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 11,
+                    title: `你的抉择, 决定了你的未来！`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${11}`,
+                    audioUrl: `https://www.svca.cc/audio/20250706-01.mp3`,
+                    url: `https://www.svca.cc/video/20250706-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 12,
+                    title: `充满生命与复活见证的地方`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${12}`,
+                    audioUrl: `https://www.svca.cc/audio/20250622-01.mp3`,
+                    url: `https://www.svca.cc/video/20250622-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 13,
+                    title: `基督是我家之主`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${13}`,
+                    audioUrl: `https://www.svca.cc/audio/20250511-01.mp3`,
+                    url: `https://www.svca.cc/video/20250511-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 14,
+                    title: `为什么「耶稣哭了」？`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${14}`,
+                    audioUrl: `https://www.svca.cc/audio/20250504-01.mp3`,
+                    url: `https://www.svca.cc/video/20250504-Sunday-message.mp44`
+                });
+                videos.push({
+                    id: 15,
+                    title: `「活得更好 —因祂活着！」`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${15}`,
+                    audioUrl: `https://www.svca.cc/audio/20250420-01.mp3`,
+                    url: `https://www.svca.cc/video/20250420-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 16,
+                    title: `主啊，医治我，使我得痊瘉！`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${16}`,
+                    audioUrl: `https://www.svca.cc/audio/20250406-01.mp3`,
+                    url: `https://www.svca.cc/video/20250406-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 17,
+                    title: `你要我为你做甚么`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${17}`,
+                    audioUrl: `https://www.svca.cc/audio/20250330-01.mp3`,
+                    url: `https://www.svca.cc/video/20250330-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 18,
+                    title: `以爱为旗，在我以上`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${18}`,
+                    audioUrl: `https://www.svca.cc/audio/20250316-01.mp3`,
+                    url: `https://www.svca.cc/video/20250316-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 19,
+                    title: `从承受祝福，到成为祝福`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${19}`,
+                    audioUrl: `https://www.svca.cc/audio/20250302-01.mp3`,
+                    url: `https://www.svca.cc/video/20250302-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 20,
+                    title: `是万民祷告的殿`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${20}`,
+                    audioUrl: `https://www.svca.cc/audio/20250216-01.mp3`,
+                    url: `https://www.svca.cc/video/20250216-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 21,
+                    title: `祷告的秘诀 – 耶稣亲自教导的`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${21}`,
+                    audioUrl: `https://www.svca.cc/audio/20250202-01.mp3`,
+                    url: `https://www.svca.cc/video/20250202-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 22,
+                    title: `是 神借着圣灵居住的所在`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${22}`,
+                    audioUrl: `https://www.svca.cc/audio/20250126-01.mp3`,
+                    url: `https://www.svca.cc/video/20250126-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 23,
+                    title: `「神的居所，我们的家」(1)`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${23}`,
+                    audioUrl: `https://www.svca.cc/audio/20250110-NYC-message-01.mp3`,
+                    url: `https://www.svca.cc/video/20250112-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 24,
+                    title: `「神的居所，我们的家」(2)`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${24}`,
+                    audioUrl: `https://www.svca.cc/audio/20250112-01.mp3`,
+                    url: `https://www.svca.cc/video/20251109-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 25,
+                    title: `与祢更亲，我 神`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${25}`,
+                    audioUrl: `https://www.svca.cc/audio/20241229-01.mp3`,
+                    url: `https://www.svca.cc/video/20241229-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 26,
+                    title: `有一婴孩为我们而生`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${26}`,
+                    audioUrl: `https://www.svca.cc/audio/20241222-01.mp3`,
+                    url: `https://www.svca.cc/video/20241222-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 27,
+                    title: `路满脂油，迈向复兴`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${27}`,
+                    audioUrl: `https://www.svca.cc/audio/20241215-01.mp3`,
+                    url: `https://www.svca.cc/video/20241215-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 28,
+                    title: `现今世代对于婚姻的威胁与谎言`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${28}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20150628-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 29,
+                    title: `从伊甸园看神所设计的婚姻1`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${29}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20150607-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 30,
+                    title: `从伊甸园看神所设计的婚姻 2`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${30}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20150621-Sundady-message.mp4`
+                });
+                videos.push({
+                    id: 31,
+                    title: `从希伯崙到锡安`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${31}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20240609-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 32,
+                    title: `在爱中彼此建造`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${32}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20240616-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 33,
+                    title: `献身成为 神合用的器皿`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${33}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20240616-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 34,
+                    title: `照着山上的样式`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${34}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20240728-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 35,
+                    title: `来罢！我们登耶和华的山、奔雅各 神的殿`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${35}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20240825-Sunday-message.mp4`
+                });
+                videos.push({
+                    id: 36,
+                    title: `令 神喜乐且得荣耀的建造`,
+                    duration: `${Math.floor(Math.random() * 50) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+                    thumbnail: `https://picsum.photos/300/160?random=${36}`,
+                    audioUrl: ``,
+                    url: `https://www.svca.cc/video/20241027-Sunday-message.mp4`
+                });
+                
+
+            
+            // 渲染视频网格
+            function renderVideos() {
+                const videoGrid = $('#videoGrid');
+                videoGrid.empty();
+                
+                videos.forEach(video => {
+                    const videoItem = $('<div class="video-item"></div>');
+                    videoItem.html(`
+                        <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-duration">时长: ${video.duration}</div>
+                        </div>
+                    `);
+                    
+                    videoItem.click(function() {
+                        const params = new URLSearchParams(window.location.search);
+                        playVideo(video);
+                   /*      if(params.get('exp')<4){
+                            playVideo(video);
+                        }else{
+                            $.post("http://122.51.89.41:89/getExpire",JSON.stringify({"wxid": params.get('wxid')}),function(data,status){
+                            if(parseInt(data)>=4){
+                                alert("目前讲道视频只开放给支持过平台的弟兄姊妹");
+                                support();
+                            }else{
+                                playVideo(video);
+                            }
+                    })
+                           
+                        } */
+                        
+                    });
+                    
+                    videoGrid.append(videoItem);
+                });
+            }
+            
+            // 播放视频
+            function playVideo(video) {
+                $('#videoPlayer').html(`
+                    <video width="100%" controls autoplay name="media">
+                        <source src="${video.url}" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                    
+                    <p style="margin-top: 15px; font-weight: bold;">正在播放: ${video.title}</p>
+                    <p style="margin-top: 15px; font-weight: bold;">若视频无法播放，可点击下面音频收听</p>
+                    <audio src="${video.audioUrl}"  controls preload ></audio>  
+                `);
+                $('#videoModal').fadeIn();
+            }
+            
+            // 支持按钮点击事件
+            $('#supportBtn').click(function() {
+                //support();
+            });
+            
+            // 确认支持按钮
+            $('#confirmSupport').click(function() {
+                $('#supportModal').fadeOut();
+                //support();
+            });
+            
+            // 取消支持按钮
+            $('#cancelSupport').click(function() {
+                $('#supportModal').fadeOut();
+            });
+            
+            // 关闭视频按钮
+            $('#closeVideo').click(function() {
+                $('#videoModal').fadeOut();
+                $('#videoPlayer').empty();
+            });
+            
+            // 初始化
+            renderVideos();
+        });
+       /*  function support(){
+        const params = new URLSearchParams(window.location.search);
+        window.location.href="https://buerai.cc/yhjwx/?open_id="+params.get('wxid');
+    }  */
+    </script>
+</body>
+</html>
