@@ -296,12 +296,13 @@
 
     <script>
         $(document).ready(function() {
+           
         if(localStorage.getItem('count')!=null){
-        localStorage.setItem('count',1+localStorage.getItem('count'));
+        localStorage.setItem('count',1+parseInt(localStorage.getItem('count')));
         }else{
 localStorage.setItem('count',1);
         }
-        
+         localStorage.clear();
       var pressTimer;
 $('#yourQrCodeId').on('touchstart', function(e) {
     pressTimer = setTimeout(function() {
@@ -671,7 +672,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
                         if(localStorage.getItem('zs')!=null){
                              playVideo(video);
                         }else{
-                            if(localStorage.getItem('count')>3){
+                            if(parseInt(localStorage.getItem('count'))>3){
                             alert("人若有愿做的心，必蒙悦纳，长按二维码，支持平台后观看");
                             }else{
                                  playVideo(video);
@@ -746,6 +747,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
     </script>
 </body>
 </html>
+
 
 
 
