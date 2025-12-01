@@ -295,6 +295,9 @@
     </div>
 
     <script>
+        $(window).on('beforeunload', function() {
+            alert('请大家多多支持平台，让传福音的事工继续往下走');
+        });
         $(document).ready(function() {
             // 模拟用户支持状态
             let hasSupported = true;
@@ -720,5 +723,6 @@
     </script>
 </body>
 </html>
+
 
 
