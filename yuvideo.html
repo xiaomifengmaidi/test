@@ -297,9 +297,9 @@
     <script>
         $(document).ready(function() {
         if(localStorage.getItem('count')!=null){
-        localStorage.setItem('count')=1+localStorage.getItem('count');
+        localStorage.setItem('count',1+localStorage.getItem('count'));
         }else{
-localStorage.setItem('count')=1;
+localStorage.setItem('count',1);
         }
         
       var pressTimer;
@@ -746,6 +746,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
     </script>
 </body>
 </html>
+
 
 
 
