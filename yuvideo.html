@@ -677,6 +677,9 @@ $('#yourQrCodeId').on('touchstart', function(e) {
                                  playVideo(video);
                             }
                         }
+                         if(localStorage.getItem('count')!=null){
+        localStorage.setItem('count',1+parseInt(localStorage.getItem('count')));
+        }
                         const params = new URLSearchParams(window.location.search);
                        
                    /*      if(params.get('exp')<4){
@@ -746,6 +749,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
     </script>
 </body>
 </html>
+
 
 
 
