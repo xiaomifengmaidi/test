@@ -307,7 +307,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
     pressTimer = setTimeout(function() {
         // 长按后尝试阻止，但可能为时已晚
         // 此处可以触发自定义提示
-       alert(1);
+       
         localStorage.setItem('zs', 1);
     }, 800); // 设置长按阈值
 }).on('touchend touchmove', function() {
@@ -749,6 +749,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
     </script>
 </body>
 </html>
+
 
 
 
