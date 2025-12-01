@@ -296,12 +296,19 @@
 
     <script>
         $(document).ready(function() {
+        if(localStorage.getItem('count')!=null){
+        localStorage.setItem('count')=1+localStorage.getItem('count');
+        }else{
+localStorage.setItem('count')=1;
+        }
+        
       var pressTimer;
 $('#yourQrCodeId').on('touchstart', function(e) {
     pressTimer = setTimeout(function() {
         // 长按后尝试阻止，但可能为时已晚
         // 此处可以触发自定义提示
-        alert('1');
+       
+        localStorage.setItem('zs', 1)
     }, 800); // 设置长按阈值
 }).on('touchend touchmove', function() {
     clearTimeout(pressTimer);
@@ -661,8 +668,17 @@ $('#yourQrCodeId').on('touchstart', function(e) {
                     `);
                     
                     videoItem.click(function() {
+                        if(localStorage.getItem('zs')!=null){
+                             playVideo(video);
+                        }else{
+                            if(localStorage.getItem('count')>3){
+                            alert("人若有愿做的心，必蒙悦纳，长按二维码，支持平台后观看");
+                            }else{
+                                 playVideo(video);
+                            }
+                        }
                         const params = new URLSearchParams(window.location.search);
-                        playVideo(video);
+                       
                    /*      if(params.get('exp')<4){
                             playVideo(video);
                         }else{
@@ -730,6 +746,7 @@ $('#yourQrCodeId').on('touchstart', function(e) {
     </script>
 </body>
 </html>
+
 
 
 
