@@ -295,56 +295,11 @@
     </div>
 
     <script>
-        // 判断设备
-var ua = navigator.userAgent;
-var isIOS = /iPhone|iPad|iPod/i.test(ua);
-
-// 推荐方案：监听页面隐藏（适用于多数“离开”场景）
-document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-        alert("请大家多多支持平台，让传福音的事工继续走下去11");
-        // 可以在此处发送埋点日志
-    }
-});
-
-// iOS 额外监听 pagehide 事件
-if (isIOS) {
-    window.addEventListener('pagehide', function(event) {
-        alert("请大家多多支持平台，让传福音的事工继续走下去12");
-        // 注意：iOS的pagehide事件中，传统的XHR或Fetch请求可能失败。
-        // 应使用 navigator.sendBeacon() 方法发送日志[citation:3]。
-       
-    });
-}
-         $(window).on('hashchange', function(e) {
-    // 提示用户
-  alert("请大家多多支持平台，让传福音的事工继续走下去5");
-});
-        $(window).on('popstate', function(e) {
-    // 提示用户
-  alert("请大家多多支持平台，让传福音的事工继续走下去4");
-});
-       $(document).on('click', 'a', function(event) {
-            var href = $(this).attr('href');
-            var target = $(this).attr('target');
-            // 如果target不是_blank，且href存在且不是锚点，则认为是跳转
-            if (target !== '_blank' && href && !href.startsWith('#')) {
-               alert("请大家多多支持平台，让传福音的事工继续走下去1");
-            }
-        });
-
-        // 监听表单提交事件
-        $(document).on('submit', 'form', function(event) {
-           alert("请大家多多支持平台，让传福音的事工继续走下去2");
-            // 同样，如果不想阻止提交，则不要调用event.preventDefault()
-        });
-
-        // 监听beforeunload事件（页面卸载前，包括跳转、刷新、关闭）
-        $(window).on('beforeunload', function() {
-           alert("请大家多多支持平台，让传福音的事工继续走下去3");
-            // 注意：这个事件无法区分跳转、刷新和关闭
-        });
         $(document).ready(function() {
+            history.pushState(null,null,location.href);
+            window.onpopstate=function(event){
+                alert("请支持平台")
+            }
             // 模拟用户支持状态
             let hasSupported = true;
             
@@ -769,6 +724,7 @@ if (isIOS) {
     </script>
 </body>
 </html>
+
 
 
 
